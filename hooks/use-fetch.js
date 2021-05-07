@@ -23,6 +23,7 @@ const useFetch = () => {
             : "Authentication Failed"
         );
       setIsLoading(false);
+
       if (credentials.isLogin) {
         const expiresIn = +fetchedData.expiresIn;
         const expirationTime = new Date(
@@ -30,7 +31,7 @@ const useFetch = () => {
         ).toISOString();
         return { ok: true, idToken: fetchedData.idToken, expirationTime };
       }
-      return { ok: true, result: fetchedData };
+      return { ok: true, result: fetchedData.message };
     } catch (error) {
       setIsLoading(false);
       return { ok: false, error: error.message };

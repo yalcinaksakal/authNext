@@ -16,8 +16,7 @@ async function handler(req, res) {
       headers: { "Content-Type": "application/json" },
     });
     const data = await response.json();
-    console.log(data);
-    console.log(data.error.message);
+
     if (!response.ok) {
       let errorMsg = "Authentication Failed";
       if (!isLogin && data && data.error && data.error.message)
@@ -31,7 +30,7 @@ async function handler(req, res) {
       .json(
         isLogin
           ? { expiresIn: data.expiresIn, idToken: data.idToken }
-          : "Account is successfully created"
+          : { message: "Account is successfully created." }
       );
   }
 }
