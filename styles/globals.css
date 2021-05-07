@@ -1,8 +1,10 @@
+@import url("https://fonts.googleapis.com/css2?family=Lato&display=swap");
+
 html,
 body {
   padding: 0;
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+  font-family: Lato, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
@@ -13,4 +15,18 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+i {
+  height: 30px;
+  font: inherit;
+  background-color: #f1e1fc;
+  color: #38015c;
+  border: none;
+  text-align: left;
+  padding: 0.25rem;
+  font-size: 15px;
+  padding-top: 7px;
+  width: 30px;
+  border-radius: 0 4px 4px 0;
 }
