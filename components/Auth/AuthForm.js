@@ -1,9 +1,12 @@
 import { useContext, useRef, useState } from "react";
 import { useRouter } from "next/router";
-import AuthContext from "../../store/auth-context";
 
 import classes from "./AuthForm.module.css";
 import useFetch from "../../hooks/use-fetch";
+import { useDispatch } from "react-redux";
+import { authActions } from "../../store/auth-slice";
+import { setLogoutTimer } from "../../store/auth-actions";
+import { calculateRemainingTime } from "../../lib/helper";
 
 const AuthForm = () => {
   const { isLoading, sendRequest: fetchLoginData } = useFetch();
@@ -13,8 +16,7 @@ const AuthForm = () => {
   const [showPwd, setShowPwd] = useState(false);
   const emailRef = useRef();
   const pwdRef = useRef();
-
-  const authCtx = useContext(AuthContext);
+  const dispatch = useDispatch();
   const router = useRouter();
   const showPwdHandler = () => {
     setShowPwd(prevState => !prevState);
@@ -38,19 +40,27 @@ const AuthForm = () => {
       password: enteredPwd,
       isLogin,
     });
-    if (!loginData.ok) setError(loginData.error);
-    if (!isLogin && loginData.ok) {
+    if (!loginData.ok) {
+      setError(loginData.error);
+      return;
+    }
+    if (!isLogin) {
       setSuccessMsg(loginData.result);
       setTimeout(() => {
         setSuccessMsg(null);
         setIsLogin(true);
-        // router.replace("/auth");
       }, 2000);
       return;
     }
 
-    console.log(loginData);
-    //
+    dispatch(
+      authActions.login({
+        token: loginData.idToken,
+        expirationTime: loginData.expirationTime,
+      })
+    );
+    dispatch(setLogoutTimer(calculateRemainingTime(loginData.expirationTime)));
+    router.replace("/");
   };
 
   return (

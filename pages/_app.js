@@ -1,10 +1,12 @@
 import "../styles/globals.css";
 import Head from "next/head";
 import Layout from "../components/Layout/Layout";
+import { Provider } from "react-redux";
+import store from "../store";
 
-function MyApp({ Component, pageProps }) {
+function AuthApp({ Component, pageProps }) {
   return (
-    <>
+    <Provider store={store}>
       <Head>
         <title>Auth</title>
         <link
@@ -19,8 +21,8 @@ function MyApp({ Component, pageProps }) {
       <Layout>
         <Component {...pageProps} />
       </Layout>
-    </>
+    </Provider>
   );
 }
 
-export default MyApp;
+export default AuthApp;

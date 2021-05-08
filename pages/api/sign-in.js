@@ -1,7 +1,6 @@
 async function handler(req, res) {
   if (req.method === "POST") {
     const { isLogin, email, password, returnSecureToken } = req.body;
-    console.log(isLogin, email, password, returnSecureToken);
     const url = `https://identitytoolkit.googleapis.com/v1/accounts:${
       isLogin ? "signInWithPassword" : "signUp"
     }?key=AIzaSyDEnXFbshker5Olr0956buPRDcbGY7HxjU`;
