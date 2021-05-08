@@ -84,8 +84,17 @@
 }
 .actions .error {
   margin-top: 1rem;
-  background-color: white;
-  color: red;
+  background-color: rgb(250, 62, 62);
+  color: white;
+  border: none;
+  padding: 0.15rem 1.5rem;
+  border-radius: 4px;
+  text-transform: capitalize;
+}
+.actions .success {
+  margin-top: 1rem;
+  background-color: limegreen;
+  color: white;
   border: none;
   padding: 0.15rem 1.5rem;
   border-radius: 4px;
