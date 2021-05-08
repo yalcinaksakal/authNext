@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { calculateRemainingTime, retriveStoredToken } from "../../lib/helper";
@@ -8,7 +9,7 @@ import classes from "./MainNavigation.module.css";
 
 const MainNavigation = () => {
   const dispatch = useDispatch();
-
+  const router = useRouter();
   const { isLoggedIn } = useSelector(state => state.auth);
 
   useEffect(() => {
@@ -17,12 +18,13 @@ const MainNavigation = () => {
       dispatch(authActions.login({ token: initialToken, expirationTime }));
       const remainingTime = calculateRemainingTime(expirationTime);
       dispatch(setLogoutTimer(remainingTime));
-    }
+    } else router.replace("/auth");
   }, [dispatch, retriveStoredToken, calculateRemainingTime]);
 
   const logoutHanler = () => {
     dispatch(authActions.logout());
     clearLogoutTimer();
+    router.replace("/auth");
   };
 
   return (

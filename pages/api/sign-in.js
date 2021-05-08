@@ -1,9 +1,13 @@
 async function handler(req, res) {
   if (req.method === "POST") {
-    const { isLogin, email, password, returnSecureToken } = req.body;
-    const url = `https://identitytoolkit.googleapis.com/v1/accounts:${
-      isLogin ? "signInWithPassword" : "signUp"
-    }?key=AIzaSyDEnXFbshker5Olr0956buPRDcbGY7HxjU`;
+    const { isLogin, email, password, returnSecureToken, changePwd } = req.body;
+    const processType = changePwd
+      ? "update"
+      : isLogin
+      ? "signInWithPassword"
+      : "signUp";
+    console.log(processType);
+    const url = `https://identitytoolkit.googleapis.com/v1/accounts:${processType}?key=AIzaSyDEnXFbshker5Olr0956buPRDcbGY7HxjU`;
 
     const response = await fetch(url, {
       method: "POST",

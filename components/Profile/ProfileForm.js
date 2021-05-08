@@ -1,13 +1,13 @@
 import { useContext, useRef, useState } from "react";
-import { useHistory } from "react-router";
-import AuthContext from "../../store/auth-context";
+// import { useHistory } from "react-router";
+// import AuthContext from "../../store/auth-context";
 import classes from "./ProfileForm.module.css";
 
 const ProfileForm = () => {
   const newPwdRef = useRef();
   const [showPwd, setShowPwd] = useState(false);
-  const { token } = useContext(AuthContext);
-  const history = useHistory();
+  // const { token } = useContext(AuthContext);
+  // const history = useHistory();
   const showPwdHandler = () => {
     setShowPwd(prevState => !prevState);
   };

@@ -1,9 +1,10 @@
 import { useContext } from "react";
+import { useSelector } from "react-redux";
 
 import classes from "./StartingPageContent.module.css";
 
 const StartingPageContent = () => {
-  const isLoggedIn = false;
+  const { isLoggedIn } = useSelector(state => state.auth);
   return (
     <section className={classes.starting}>
       <h1>{isLoggedIn ? "Welcome on Board!" : "Please Login"}</h1>
