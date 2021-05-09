@@ -57,3 +57,21 @@
   background-color: #540d83;
   border-color: #540d83;
 }
+
+.message p {
+  margin-top: 1rem;
+  color: white;
+  border: none;
+  padding: 0.15rem 1.5rem;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.message .error {
+  background-color: rgb(250, 62, 62);
+}
+.message .success {
+  background-color: limegreen;
+}

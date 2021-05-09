@@ -1,57 +1,79 @@
-import { useContext, useRef, useState } from "react";
-// import { useHistory } from "react-router";
-// import AuthContext from "../../store/auth-context";
+import { useRouter } from "next/router";
+import { useRef, useState } from "react";
+import { useSelector } from "react-redux";
+import useFetch from "../../hooks/use-fetch";
+
 import classes from "./ProfileForm.module.css";
 
 const ProfileForm = () => {
   const newPwdRef = useRef();
   const [showPwd, setShowPwd] = useState(false);
-  // const { token } = useContext(AuthContext);
-  // const history = useHistory();
+  const { isLoading, sendRequest: changePwd } = useFetch();
+  const [changeResult, setChangeResult] = useState(null);
+  const router = useRouter();
   const showPwdHandler = () => {
     setShowPwd(prevState => !prevState);
   };
-  const submitHandler = e => {
+  const { token } = useSelector(state => state.auth);
+  const submitHandler = async e => {
     e.preventDefault();
+    setChangeResult(null);
     const enteredPwd = newPwdRef.current.value;
-
-    fetch(
-      "https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDEnXFbshker5Olr0956buPRDcbGY7HxjU",
-      {
-        method: "POST",
-        body: JSON.stringify({
-          idToken: token,
-          password: enteredPwd,
-          returnSecureToken: false,
-        }),
-        headers: { "Content-Type": "application/json" },
-      }
-    ).then(res => {
-      // assume success
-      history.replace("/");
+    const changePwdResult = await changePwd({
+      token,
+      password: enteredPwd,
+      changePwd: true,
     });
+    setChangeResult({
+      success: changePwdResult.ok,
+      message: changePwdResult.ok
+        ? "Your password has changed."
+        : changePwdResult.error.includes("expired")
+        ? "Your session needs to be refreshed to change password. Please logout and login again."
+        : changePwdResult.error,
+    });
+    if (changePwdResult.ok) setTimeout(() => setChangeResult(null), 3000);
   };
   return (
     <form onSubmit={submitHandler} className={classes.form}>
-      <div className={classes.control}>
-        <label htmlFor="new-password">New Password</label>
-        <div>
-          <input
-            type={`${showPwd ? "text" : "password"}`}
-            // wont validate pwd, just use minlength now
-            minLength="7"
-            id="new-password"
-            ref={newPwdRef}
-          />
-          <i
-            onClick={showPwdHandler}
-            className={`far fa-eye${showPwd ? "" : "-slash"}`}
-          ></i>
+      {changeResult?.success ? (
+        ""
+      ) : (
+        <div className={classes.control}>
+          <label htmlFor="new-password">New Password</label>
+          <div>
+            <input
+              type={`${showPwd ? "text" : "password"}`}
+              // wont validate pwd, just use minlength now
+              id="new-password"
+              ref={newPwdRef}
+            />
+            <i
+              onClick={showPwdHandler}
+              className={`far fa-eye${showPwd ? "" : "-slash"}`}
+            ></i>
+          </div>
         </div>
-      </div>
+      )}
+
       <div className={classes.action}>
-        <button>Change Password</button>
+        {isLoading ? (
+          "Sending request..."
+        ) : changeResult?.success ? (
+          ""
+        ) : (
+          <button>Change Password</button>
+        )}
       </div>
+      {changeResult ? (
+        <div className={classes.message}>
+          <p className={changeResult.success ? classes.success : classes.error}>
+            {changeResult.message}
+          </p>
+        </div>
+      ) : (
+        ""
+      )}
     </form>
   );
 };
