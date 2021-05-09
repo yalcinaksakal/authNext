@@ -11,10 +11,10 @@ const authSlice = createSlice({
       const { token, expirationTime } = action.payload;
       state.token = token;
       state.isLoggedIn = true;
-      // state.remainingTime = Math.trunc(
-      //   calculateRemainingTime(expirationTime) /1000
-      // );
-      state.remainingTime = 120;
+      state.remainingTime = Math.trunc(
+        calculateRemainingTime(expirationTime) / 1000
+      );
+      console.log(expirationTime);
       localStorage.setItem(
         "token",
         JSON.stringify({
