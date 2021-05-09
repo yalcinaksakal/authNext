@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { calculateRemainingTime, retriveStoredToken } from "../lib/helper";
 
-const initialState = { isLoggedIn: false, token: null };
+const initialState = { isLoggedIn: false, token: null, remainingTime: 0 };
 
 const authSlice = createSlice({
   name: "auth",
@@ -11,6 +11,10 @@ const authSlice = createSlice({
       const { token, expirationTime } = action.payload;
       state.token = token;
       state.isLoggedIn = true;
+      // state.remainingTime = Math.trunc(
+      //   calculateRemainingTime(expirationTime) /1000
+      // );
+      state.remainingTime = 120;
       localStorage.setItem(
         "token",
         JSON.stringify({
@@ -22,7 +26,11 @@ const authSlice = createSlice({
     logout(state) {
       state.isLoggedIn = false;
       state.token = null;
+      state.remainingTime = 0;
       localStorage.removeItem("token");
+    },
+    remainingTimeHandler(state) {
+      state.remainingTime--;
     },
   },
 });

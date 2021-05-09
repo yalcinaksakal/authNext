@@ -10,9 +10,9 @@ import classes from "./MainNavigation.module.css";
 const MainNavigation = () => {
   const dispatch = useDispatch();
   const router = useRouter();
-  const { isLoggedIn } = useSelector(state => state.auth);
-
+  const { isLoggedIn, remainingTime } = useSelector(state => state.auth);
   useEffect(() => {
+    console.log("main nav useEffect");
     const { initialToken, expirationTime } = retriveStoredToken();
     if (initialToken) {
       dispatch(authActions.login({ token: initialToken, expirationTime }));
@@ -26,7 +26,7 @@ const MainNavigation = () => {
     clearLogoutTimer();
     router.replace("/auth");
   };
-
+  if (!remainingTime && isLoggedIn) logoutHanler();
   return (
     <header className={classes.header}>
       <Link href="/">
@@ -48,6 +48,9 @@ const MainNavigation = () => {
               </li>
               <li>
                 <button onClick={logoutHanler}>Logout</button>
+                <div className={classes.counter}>
+                  {remainingTime} seconds to logout
+                </div>
               </li>
             </>
           )}
