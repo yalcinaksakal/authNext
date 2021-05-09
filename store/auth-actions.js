@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import { authActions } from "./auth-slice";
 
 let logoutTimer;
@@ -10,7 +9,7 @@ export const setLogoutTimer = remainingTime => {
     const counter = () => {
       count--;
       dispatch(authActions.remainingTimeHandler());
-      if (count<0) {
+      if (count < 0) {
         clearInterval(logoutTimer);
         dispatch(authActions.logout());
       }
