@@ -103,5 +103,16 @@
 
 .actions .toggle:hover {
   background-color: transparent;
-  color: #ae82cc;
+  color: white;
+}
+
+.actions .gbutton {
+  background: none;
+  border: none;
+  padding: 0 0 0 15px;
+  color: #9f5ccc;
+}
+.actions .gbutton:hover {
+  background: none;
+  color: #4c8bf5;
 }

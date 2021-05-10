@@ -12,10 +12,11 @@ const MainNavigation = () => {
   const router = useRouter();
   const { isLoggedIn, remainingTime } = useSelector(state => state.auth);
   useEffect(() => {
-    console.log("main nav useEffect");
-    const { initialToken, expirationTime } = retriveStoredToken();
+    const { initialToken, expirationTime, userName } = retriveStoredToken();
     if (initialToken) {
-      dispatch(authActions.login({ token: initialToken, expirationTime }));
+      dispatch(
+        authActions.login({ token: initialToken, expirationTime, userName })
+      );
       const remainingTime = calculateRemainingTime(expirationTime);
       dispatch(setLogoutTimer(remainingTime));
     } else router.replace("/auth");

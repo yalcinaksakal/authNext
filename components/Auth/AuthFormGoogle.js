@@ -1,3 +1,5 @@
+// 736076693286-uk39q439de824gkiu3h3m4kb3viurau4.apps.googleusercontent.com
+
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
@@ -7,6 +9,7 @@ import { useDispatch } from "react-redux";
 import { authActions } from "../../store/auth-slice";
 import { setLogoutTimer } from "../../store/auth-actions";
 import { calculateRemainingTime } from "../../lib/helper";
+import GoogleLogin from "react-google-login";
 
 const AuthForm = () => {
   const { isLoading, sendRequest: fetchLoginData } = useFetch();
@@ -20,6 +23,30 @@ const AuthForm = () => {
   const router = useRouter();
   const showPwdHandler = () => {
     setShowPwd(prevState => !prevState);
+  };
+
+  const loginHandler = (token, expirationTime, userName) => {
+    dispatch(
+      authActions.login({
+        token,
+        expirationTime,
+        userName,
+      })
+    );
+    dispatch(setLogoutTimer(calculateRemainingTime(expirationTime)));
+    router.replace("/");
+  };
+
+  const responseGoogle = response => {
+    if (response.error) {
+      return;
+    }
+    const expiresIn = +response.tokenObj.expires_in;
+    //fix 120 seconds to logout, if u want logout according to Firebase expiresIn time, use it instead of 120 below
+    const expirationTime = new Date(
+      new Date().getTime() + 120 * 1000
+    ).toISOString();
+    loginHandler(response.tokenId, expirationTime, response.profileObj.name);
   };
 
   const switchAuthModeHandler = () => {
@@ -53,14 +80,11 @@ const AuthForm = () => {
       return;
     }
 
-    dispatch(
-      authActions.login({
-        token: loginData.idToken,
-        expirationTime: loginData.expirationTime,
-      })
+    loginHandler(
+      loginData.idToken,
+      loginData.expirationTime,
+      enteredEmail.split("@")[0]
     );
-    dispatch(setLogoutTimer(calculateRemainingTime(loginData.expirationTime)));
-    router.replace("/");
   };
 
   return (
@@ -97,7 +121,31 @@ const AuthForm = () => {
           {isLoading ? (
             <p>Sending Request...</p>
           ) : (
-            <button>{isLogin ? "Login" : "Create Account"}</button>
+            <>
+              <button>{isLogin ? "Login" : "Create Account"}</button>
+              <GoogleLogin
+                render={renderProps => (
+                  <button
+                    className={classes.gbutton}
+                    onClick={renderProps.onClick}
+                  >
+                    Login with
+                    <i
+                      className="fab fa-google"
+                      style={{
+                        background: "transparent",
+                        color: "#4c8bf5",
+                        marginLeft: "5px",
+                      }}
+                    ></i>
+                  </button>
+                )}
+                clientId="736076693286-uk39q439de824gkiu3h3m4kb3viurau4.apps.googleusercontent.com"
+                buttonText="Login"
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+              />
+            </>
           )}
           <button
             type="button"

@@ -62,12 +62,3 @@
   color: gray;
   font-size: 0.6rem;
 }
-@media (max-width: 300px) {
-  .header {
-    padding: 5px;
-    flex-direction: column;
-  }
-  /* .header ul:first-child {
-    margin-left: 0;
-  } */
-}
