@@ -1,5 +1,5 @@
 // 736076693286-uk39q439de824gkiu3h3m4kb3viurau4.apps.googleusercontent.com
-
+// 736076693286-m98km6smat5d0rb7q58fi19ae9os0trp.apps.googleusercontent.com
 import { useRef, useState } from "react";
 import { useRouter } from "next/router";
 
@@ -45,8 +45,8 @@ const AuthForm = () => {
 
   const responseGoogle = response => {
     if (response.error) {
-     
-      setError(response.error.replace(/_/g, " "));
+      setError("Authentication failed");
+      //   setError(response.error.replace(/_/g, " "));
       return;
     }
     const expiresIn = +response.tokenObj.expires_in;
@@ -167,7 +167,7 @@ const AuthForm = () => {
             ></i>
           </button>
         )}
-        clientId="736076693286-uk39q439de824gkiu3h3m4kb3viurau4.apps.googleusercontent.com"
+        clientId="736076693286-m98km6smat5d0rb7q58fi19ae9os0trp.apps.googleusercontent.com"
         buttonText="Login"
         onSuccess={responseGoogle}
         onFailure={responseGoogle}
