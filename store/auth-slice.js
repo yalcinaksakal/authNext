@@ -6,6 +6,7 @@ const initialState = {
   token: null,
   remainingTime: 0,
   userName: null,
+  loginType: null,
 };
 
 const authSlice = createSlice({
@@ -13,10 +14,11 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     login(state, action) {
-      const { token, expirationTime, userName } = action.payload;
+      const { token, expirationTime, userName, loginType } = action.payload;
       state.token = token;
       state.isLoggedIn = true;
       state.userName = userName;
+      state.loginType = loginType;
       state.remainingTime = Math.trunc(
         calculateRemainingTime(expirationTime) / 1000
       );
@@ -35,6 +37,7 @@ const authSlice = createSlice({
       state.token = null;
       state.remainingTime = 0;
       state.userName = null;
+      state.loginType = null;
       localStorage.removeItem("token");
     },
     remainingTimeHandler(state) {

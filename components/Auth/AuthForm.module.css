@@ -82,7 +82,23 @@
   border: none;
   padding: 0.15rem 1.5rem;
 }
-.actions .error {
+
+.actions .toggle:hover {
+  background-color: transparent;
+  color: white;
+}
+
+.gbutton {
+  background: none;
+  border: none;
+  padding: 0 0 0 15px;
+  color: #9f5ccc;
+}
+.gbutton:hover {
+  background: none;
+  color: #4c8bf5;
+}
+.error {
   margin-top: 1rem;
   background-color: rgb(250, 62, 62);
   color: white;
@@ -91,7 +107,7 @@
   border-radius: 4px;
   text-transform: capitalize;
 }
-.actions .success {
+.success {
   margin-top: 1rem;
   background-color: limegreen;
   color: white;
@@ -99,20 +115,4 @@
   padding: 0.15rem 1.5rem;
   border-radius: 4px;
   text-transform: capitalize;
-}
-
-.actions .toggle:hover {
-  background-color: transparent;
-  color: white;
-}
-
-.actions .gbutton {
-  background: none;
-  border: none;
-  padding: 0 0 0 15px;
-  color: #9f5ccc;
-}
-.actions .gbutton:hover {
-  background: none;
-  color: #4c8bf5;
 }

@@ -25,12 +25,18 @@ const AuthForm = () => {
     setShowPwd(prevState => !prevState);
   };
 
-  const loginHandler = (token, expirationTime, userName) => {
+  const loginHandler = (
+    token,
+    expirationTime,
+    userName,
+    loginType = "user"
+  ) => {
     dispatch(
       authActions.login({
         token,
         expirationTime,
         userName,
+        loginType,
       })
     );
     dispatch(setLogoutTimer(calculateRemainingTime(expirationTime)));
@@ -39,6 +45,8 @@ const AuthForm = () => {
 
   const responseGoogle = response => {
     if (response.error) {
+      setError("Authentication failed");
+      //   setError(response.error.replace(/_/g, " "));
       return;
     }
     const expiresIn = +response.tokenObj.expires_in;
@@ -46,7 +54,12 @@ const AuthForm = () => {
     const expirationTime = new Date(
       new Date().getTime() + 120 * 1000
     ).toISOString();
-    loginHandler(response.tokenId, expirationTime, response.profileObj.name);
+    loginHandler(
+      response.tokenId,
+      expirationTime,
+      response.profileObj.name,
+      "google"
+    );
   };
 
   const switchAuthModeHandler = () => {
@@ -123,28 +136,6 @@ const AuthForm = () => {
           ) : (
             <>
               <button>{isLogin ? "Login" : "Create Account"}</button>
-              <GoogleLogin
-                render={renderProps => (
-                  <button
-                    className={classes.gbutton}
-                    onClick={renderProps.onClick}
-                  >
-                    Login with
-                    <i
-                      className="fab fa-google"
-                      style={{
-                        background: "transparent",
-                        color: "#4c8bf5",
-                        marginLeft: "5px",
-                      }}
-                    ></i>
-                  </button>
-                )}
-                clientId="736076693286-uk39q439de824gkiu3h3m4kb3viurau4.apps.googleusercontent.com"
-                buttonText="Login"
-                onSuccess={responseGoogle}
-                onFailure={responseGoogle}
-              />
             </>
           )}
           <button
@@ -154,10 +145,35 @@ const AuthForm = () => {
           >
             {isLogin ? "Create new account" : "Login with existing account"}
           </button>
-          {error ? <p className={classes.error}>{error}</p> : ""}
-          {successMsg ? <p className={classes.success}>{successMsg}</p> : ""}
         </div>
       </form>
+      <GoogleLogin
+        render={renderProps => (
+          <button
+            className={classes.gbutton}
+            onClick={() => {
+              setError(false);
+              renderProps.onClick();
+            }}
+          >
+            Login with
+            <i
+              className="fab fa-google"
+              style={{
+                background: "transparent",
+                color: "#4c8bf5",
+                marginLeft: "5px",
+              }}
+            ></i>
+          </button>
+        )}
+        clientId="736076693286-uk39q439de824gkiu3h3m4kb3viurau4.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+      />
+      {error ? <p className={classes.error}>{error}</p> : ""}
+      {successMsg ? <p className={classes.success}>{successMsg}</p> : ""}
     </section>
   );
 };
