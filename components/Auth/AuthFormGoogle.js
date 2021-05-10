@@ -45,8 +45,8 @@ const AuthForm = () => {
 
   const responseGoogle = response => {
     if (response.error) {
-      setError("Authentication failed");
-      //   setError(response.error.replace(/_/g, " "));
+     
+      setError(response.error.replace(/_/g, " "));
       return;
     }
     const expiresIn = +response.tokenObj.expires_in;
