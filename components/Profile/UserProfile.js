@@ -4,6 +4,9 @@ import classes from "./UserProfile.module.css";
 
 const UserProfile = () => {
   const { loginType, userName } = useSelector(state => state.auth);
+  const auth = useSelector(state => state.auth);
+  console.log(auth);
+
   return (
     <section className={classes.profile}>
       <h1>{userName}</h1>

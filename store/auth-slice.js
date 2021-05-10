@@ -29,6 +29,7 @@ const authSlice = createSlice({
           token,
           expirationTime,
           userName,
+          loginType,
         })
       );
     },

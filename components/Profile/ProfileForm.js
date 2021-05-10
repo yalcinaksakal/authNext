@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import useFetch from "../../hooks/use-fetch";
@@ -10,7 +9,7 @@ const ProfileForm = () => {
   const [showPwd, setShowPwd] = useState(false);
   const { isLoading, sendRequest: changePwd } = useFetch();
   const [changeResult, setChangeResult] = useState(null);
-  const router = useRouter();
+
   const showPwdHandler = () => {
     setShowPwd(prevState => !prevState);
   };

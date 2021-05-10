@@ -10,12 +10,23 @@ import classes from "./MainNavigation.module.css";
 const MainNavigation = () => {
   const dispatch = useDispatch();
   const router = useRouter();
+
   const { isLoggedIn, remainingTime } = useSelector(state => state.auth);
   useEffect(() => {
-    const { initialToken, expirationTime, userName } = retriveStoredToken();
+    const {
+      initialToken,
+      expirationTime,
+      userName,
+      loginType,
+    } = retriveStoredToken();
     if (initialToken) {
       dispatch(
-        authActions.login({ token: initialToken, expirationTime, userName })
+        authActions.login({
+          token: initialToken,
+          expirationTime,
+          userName,
+          loginType,
+        })
       );
       const remainingTime = calculateRemainingTime(expirationTime);
       dispatch(setLogoutTimer(remainingTime));
@@ -42,10 +53,10 @@ const MainNavigation = () => {
           )}
           {isLoggedIn && (
             <>
-              <li>
-                <Link className={classes.active} href="/profile">
-                  Profile
-                </Link>
+              <li
+                className={router.pathname === "/profile" ? classes.active : ""}
+              >
+                <Link href="/profile">Profile</Link>
               </li>
               <li>
                 <button onClick={logoutHanler}>Logout</button>
